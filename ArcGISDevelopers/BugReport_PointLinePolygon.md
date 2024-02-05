@@ -27,4 +27,5 @@ Scope
 Browser Concole Errors
 - GET https://basemapstyles-api.arcgis.com/arcgis/rest/services/styles/v2/webmaps/arcgis/topographic?language=en&token=AAPKe129fa0d558e45bd933c2d9bc247516bna1Wdg3j6A1WflwncTUNCVPlG_sS4aoCBu57yXVTmXVoC0rRmDSlnhHS_Af_Knbb 401 (Unauthorized)
 - [esri.Basemap] #load() Failed to load basemap (title: 'Basemap', id: '18d7bab5ef5-basemap-0') f {name: 'request:server', details: {…}, message: 'Token Invalid.'}
-![FindPlaces_Errors](https://github.com/cklouislok/geom99lab2/assets/146376082/52da9fb1-2152-40ee-b96c-2d00920980df)
+
+![PointLinePolygon_Errors](https://github.com/cklouislok/geom99lab2/assets/146376082/16f23c33-6d41-400a-a9ff-76a96c4cafee)
