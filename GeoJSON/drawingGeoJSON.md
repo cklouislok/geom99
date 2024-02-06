@@ -5,3 +5,8 @@ Web Map: https://fleming.maps.arcgis.com/home/item.html?id=d95a65bdf68f4ddb8939f
 
 via GitHub - Drawing Trex in Hong Kong via GitHub
 Web Map: https://fleming.maps.arcgis.com/home/item.html?id=04944d14a2f94727a8ad9b141a4a7b42
+
+Can you store your GeoJSON in GitHub and display it on the ArcGIS Map Viewer? 
+What happens if you make a change to the file in GitHub? (hint https://developers.arcgis.com/web-map-specification/objects/geojsonLayer/)
+Yes
+refreshInterval: 0.5 minutes
