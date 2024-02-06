@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Customized Map: T-Rex vs. Pac-man</title>
+  <style>
+    html, body, #mapDiv {
+      padding: 0;
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+  <link rel="stylesheet" href="https://js.arcgis.com/4.28/esri/themes/light/main.css">
+  <script src="https://js.arcgis.com/4.28/"></script>
+  <script>
+
+  // Adapted from ArcGIS Developers Tutorial "Add a point, line, and polygon" at https://developers.arcgis.com/javascript/latest/tutorials/add-a-point-line-and-polygon/
+  
+  // Load required modules
+  require([
+    "esri/config",
+    "esri/Map",
+    "esri/views/MapView",
+	"esri/layers/FeatureLayer",
+    "esri/Graphic",
+    "esri/layers/GraphicsLayer"
+    ], function(esriConfig, Map, MapView, FeatureLayer, Graphic, GraphicsLayer) {
+
+  // Create Basemap
+  const myMap = new Map({
+    basemap: "streets" // basemap styles service
+  });
+
+  // Create MapView
+  const view = new MapView({
+    map: myMap,
+    center: 
+		[114.06901761940657,
+        22.25277572784273], //Longitude, latitude
+    zoom: 12,
+    container: "mapDiv"
+  });
+ 
+  // Import Feature Layer from AGOL
+  const featureLayer = new FeatureLayer({
+    portalItem: {
+	// Drawing T-Rex in Hong Kong feature layer
+	id: "eec9ea013bb14b409d1812543b84ef1b"
+	}
+  });
+	
+  // Add feature layer to map view
+  myMap.add(featureLayer);
+
+  // Create a graphics layer for drawing geometries
+  const graphicsLayer = new GraphicsLayer();
+  
+  // Add graphics layer to map view
+  myMap.add(graphicsLayer);
+
+  // Create a point geometry
+  const point = {
+    type: "point",
+    longitude: 113.99489379449261,
+    latitude: 22.25393493251208
+  };
+
+  // Set up point marker styles
+  const pointMarker = {
+    type: "simple-marker",
+    color: [0, 0, 0],  // Black
+	// Intended to have the point size fixed, but it varies with the map scale
+	size: "48px",
+    outline: {
+        color: [0, 0, 0], // Black
+    }
+  };
+
+  // Create point graphic
+  const pointGraphic = new Graphic({
+    geometry: point,
+    symbol: pointMarker
+  });
+  
+  // Create polygon geometries
+  const polygon_heart = {
+    type: "polygon",
+    rings: [
+        [114.01370959451276, 22.27712978531521],
+        [114.01070653906481, 22.27822711966025],
+        [114.00832859345036, 22.27741043637503],
+		[114.00743517569299, 22.27538468573853],
+        [114.00784109827555, 22.27242104381434],
+        [114.01125292014382, 22.26954254023044],
+        [114.01625821334580, 22.26778466590278],
+        [114.02060734669050, 22.26683854328971],
+        [114.02161470600203, 22.27055764680928],
+        [114.02171638134274, 22.27418478299354],
+        [114.02129906482969, 22.27799388578749],
+        [114.01863604603273, 22.28056758043504],
+        [114.01580318228866, 22.28100633939115],
+        [114.01430564249665, 22.27943677615768]
+    ]
+  };
+
+  const polygon_pacman = {
+    type: "polygon",
+    rings: [
+        [113.99366377294240, 22.24140692732507],
+        [114.01206531412527, 22.25347445742865],
+        [114.00643996318894, 22.25972964548130],
+        [113.99684516686835, 22.26365640177788],
+        [113.98668010601085, 22.26277608032035],
+        [113.97833114044784, 22.25470077289935],
+        [113.97352021325617, 22.24424823944556],
+        [113.97290024832057, 22.23298389397885],
+        [113.98047339345351, 22.22210170316538],
+        [113.99189772254977, 22.21661564451776],
+        [114.00630982280654, 22.21711217190312],
+        [114.01500735363561, 22.22423518182782],
+        [114.02115827005741, 22.23168038797230]
+    ]
+  };
+
+  // Set up polygon styles
+  const simpleFillSymbol_heart = {
+    type: "simple-fill",
+    color: [255, 105, 180, 0.4],  // Pink, opacity 40%
+    outline: {
+        color: [255, 0, 0],
+        width: 2
+    }
+  };
+ 
+  const simpleFillSymbol_pacman = {
+    type: "simple-fill",
+    color: [255, 255, 0, 0.4],  // Yellow, opacity 40%
+    outline: {
+        color: [0, 0, 0],
+        width: 2
+    }
+  };
+
+  // Set up pop-up template
+  const popupTemplate = {
+    title: "{Name}",
+    content: "{Description}"
+  }
+  
+  // Set the info to display in the pop-up when the features are clicked
+  // Also attempted to set up the same popupTemplate for the T-Rex feature layer but failed.
+  // In this connection, the pop-up info is modified directly on the Feature Layer on AGOL.
+  const attributes_heart = {
+    Name: "Elixir of Life",
+    Description: "Catch me if you can!"
+  }
+
+  const attributes_pacman = {
+    Name: "Pac-man",
+    Description: "I've been waiting for you so long, T-Rex!"
+  }
+
+  // Create polygon graphics
+  const polygonGraphic_heart = new Graphic({
+    geometry: polygon_heart,
+    symbol: simpleFillSymbol_heart,
+    attributes: attributes_heart,
+    popupTemplate: popupTemplate
+  });
+ 
+  const polygonGraphic_pacman = new Graphic({
+    geometry: polygon_pacman,
+    symbol: simpleFillSymbol_pacman,
+    attributes: attributes_pacman,
+    popupTemplate: popupTemplate
+  });
+  
+  // Add the polygon and point graphics to map view
+  // With this order, the dot (eye) will be above the Pac-man layer
+  graphicsLayer.add(polygonGraphic_heart);
+  graphicsLayer.add(polygonGraphic_pacman);
+  graphicsLayer.add(pointGraphic);
+  });
+  
+</script>
+</head>
+<body>
+  <div id="mapDiv"></div>
+</body>
+</html>
